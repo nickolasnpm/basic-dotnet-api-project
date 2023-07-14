@@ -1,0 +1,160 @@
+2023-07-14 09:40:46.882 +08:00 [INF] Executed DbCommand (17ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2023-07-14 09:40:46.949 +08:00 [INF] Executed DbCommand (17ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2023-07-14 09:40:46.952 +08:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2023-07-14 09:40:46.953 +08:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2023-07-14 09:40:47.001 +08:00 [INF] Executed DbCommand (35ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2023-07-14 09:40:47.018 +08:00 [INF] Applying migration '20230714014032_Initial Migration'.
+2023-07-14 09:40:47.113 +08:00 [ERR] Failed executing DbCommand (26ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [DifficultyTable] (
+    [Id] uniqueidentifier NOT NULL,
+    [Code] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_DifficultyTable] PRIMARY KEY ([Id])
+);
+2023-07-14 09:42:11.187 +08:00 [INF] Executed DbCommand (268ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+CREATE DATABASE [NewZealandWalk];
+2023-07-14 09:42:11.261 +08:00 [INF] Executed DbCommand (42ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [NewZealandWalk] SET READ_COMMITTED_SNAPSHOT ON;
+END;
+2023-07-14 09:42:11.275 +08:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2023-07-14 09:42:11.335 +08:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [__EFMigrationsHistory] (
+    [MigrationId] nvarchar(150) NOT NULL,
+    [ProductVersion] nvarchar(32) NOT NULL,
+    CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+);
+2023-07-14 09:42:11.336 +08:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2023-07-14 09:42:11.350 +08:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2023-07-14 09:42:11.360 +08:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2023-07-14 09:42:11.384 +08:00 [INF] Applying migration '20230714014202_Inital Migration'.
+2023-07-14 09:42:11.421 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [DifficultyTable] (
+    [Id] uniqueidentifier NOT NULL,
+    [Code] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_DifficultyTable] PRIMARY KEY ([Id])
+);
+2023-07-14 09:42:11.423 +08:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ImagesTable] (
+    [Id] uniqueidentifier NOT NULL,
+    [FileName] nvarchar(max) NOT NULL,
+    [FileDescription] nvarchar(max) NULL,
+    [FileExtension] nvarchar(max) NOT NULL,
+    [FileSizeInBytes] bigint NOT NULL,
+    [FilePath] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_ImagesTable] PRIMARY KEY ([Id])
+);
+2023-07-14 09:42:11.424 +08:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [RegionTable] (
+    [Id] uniqueidentifier NOT NULL,
+    [Code] nvarchar(max) NULL,
+    [Name] nvarchar(max) NULL,
+    [Area] float NOT NULL,
+    [Lat] float NOT NULL,
+    [Long] float NOT NULL,
+    [Population] bigint NOT NULL,
+    CONSTRAINT [PK_RegionTable] PRIMARY KEY ([Id])
+);
+2023-07-14 09:42:11.424 +08:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [RolesTable] (
+    [Id] uniqueidentifier NOT NULL,
+    [Title] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_RolesTable] PRIMARY KEY ([Id])
+);
+2023-07-14 09:42:11.425 +08:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [UsersTable] (
+    [Id] uniqueidentifier NOT NULL,
+    [FirstName] nvarchar(max) NOT NULL,
+    [LastName] nvarchar(max) NOT NULL,
+    [Username] nvarchar(max) NOT NULL,
+    [EmailAddress] nvarchar(max) NOT NULL,
+    [PasswordHash] varbinary(max) NOT NULL,
+    [PasswordSalt] varbinary(max) NOT NULL,
+    CONSTRAINT [PK_UsersTable] PRIMARY KEY ([Id])
+);
+2023-07-14 09:42:11.428 +08:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [WalkTable] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [Length] float NOT NULL,
+    [RegionId] uniqueidentifier NOT NULL,
+    [DifficultyId] uniqueidentifier NOT NULL,
+    CONSTRAINT [PK_WalkTable] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_WalkTable_DifficultyTable_DifficultyId] FOREIGN KEY ([DifficultyId]) REFERENCES [DifficultyTable] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_WalkTable_RegionTable_RegionId] FOREIGN KEY ([RegionId]) REFERENCES [RegionTable] ([Id]) ON DELETE CASCADE
+);
+2023-07-14 09:42:11.430 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [UsersRolesTable] (
+    [Id] uniqueidentifier NOT NULL,
+    [UserID] uniqueidentifier NOT NULL,
+    [RoleID] uniqueidentifier NOT NULL,
+    CONSTRAINT [PK_UsersRolesTable] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_UsersRolesTable_RolesTable_RoleID] FOREIGN KEY ([RoleID]) REFERENCES [RolesTable] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_UsersRolesTable_UsersTable_UserID] FOREIGN KEY ([UserID]) REFERENCES [UsersTable] ([Id]) ON DELETE CASCADE
+);
+2023-07-14 09:42:11.433 +08:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_UsersRolesTable_RoleID] ON [UsersRolesTable] ([RoleID]);
+2023-07-14 09:42:11.433 +08:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_UsersRolesTable_UserID] ON [UsersRolesTable] ([UserID]);
+2023-07-14 09:42:11.435 +08:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_WalkTable_DifficultyId] ON [WalkTable] ([DifficultyId]);
+2023-07-14 09:42:11.435 +08:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_WalkTable_RegionId] ON [WalkTable] ([RegionId]);
+2023-07-14 09:42:11.441 +08:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20230714014202_Inital Migration', N'7.0.3');
+2023-07-14 10:28:27.127 +08:00 [INF] User profile is available. Using 'C:\Users\Hp\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-07-14 10:28:27.497 +08:00 [INF] Now listening on: https://localhost:7227
+2023-07-14 10:28:27.498 +08:00 [INF] Now listening on: http://localhost:5257
+2023-07-14 10:28:27.501 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-07-14 10:28:27.502 +08:00 [INF] Hosting environment: Development
+2023-07-14 10:28:27.503 +08:00 [INF] Content root path: C:\Users\Hp\Desktop\CODING\GUIDES\BACKEND\basic-dotnet-project\
+2023-07-14 10:28:28.314 +08:00 [INF] Request starting HTTP/2 GET https://localhost:7227/swagger/index.html - -
+2023-07-14 10:28:28.783 +08:00 [INF] Request starting HTTP/2 GET https://localhost:7227/_framework/aspnetcore-browser-refresh.js - -
+2023-07-14 10:28:28.787 +08:00 [INF] Request finished HTTP/2 GET https://localhost:7227/swagger/index.html - - - 200 - text/html;charset=utf-8 477.7062ms
+2023-07-14 10:28:28.787 +08:00 [INF] Request finished HTTP/2 GET https://localhost:7227/_framework/aspnetcore-browser-refresh.js - - - 200 11994 application/javascript;+charset=utf-8 4.4765ms
+2023-07-14 10:28:28.798 +08:00 [INF] Request starting HTTP/2 GET https://localhost:7227/_vs/browserLink - -
+2023-07-14 10:28:28.861 +08:00 [INF] Request finished HTTP/2 GET https://localhost:7227/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 62.7485ms
+2023-07-14 10:28:28.912 +08:00 [INF] Request starting HTTP/2 GET https://localhost:7227/swagger/v1/swagger.json - -
+2023-07-14 10:28:29.018 +08:00 [INF] Request finished HTTP/2 GET https://localhost:7227/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 106.3005ms
+2023-07-14 10:29:13.744 +08:00 [INF] User profile is available. Using 'C:\Users\Hp\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-07-14 10:29:14.040 +08:00 [INF] Now listening on: https://localhost:7227
+2023-07-14 10:29:14.041 +08:00 [INF] Now listening on: http://localhost:5257
+2023-07-14 10:29:14.045 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-07-14 10:29:14.049 +08:00 [INF] Hosting environment: Development
+2023-07-14 10:29:14.050 +08:00 [INF] Content root path: C:\Users\Hp\Desktop\CODING\GUIDES\BACKEND\basic-dotnet-project\
+2023-07-14 10:29:14.806 +08:00 [INF] Request starting HTTP/2 GET https://localhost:7227/swagger/index.html - -
+2023-07-14 10:29:15.146 +08:00 [INF] Request starting HTTP/2 GET https://localhost:7227/_vs/browserLink - -
+2023-07-14 10:29:15.146 +08:00 [INF] Request starting HTTP/2 GET https://localhost:7227/_framework/aspnetcore-browser-refresh.js - -
+2023-07-14 10:29:15.184 +08:00 [INF] Request finished HTTP/2 GET https://localhost:7227/swagger/index.html - - - 200 - text/html;charset=utf-8 380.3822ms
+2023-07-14 10:29:15.184 +08:00 [INF] Request finished HTTP/2 GET https://localhost:7227/_framework/aspnetcore-browser-refresh.js - - - 200 11994 application/javascript;+charset=utf-8 37.9664ms
+2023-07-14 10:29:15.200 +08:00 [INF] Request finished HTTP/2 GET https://localhost:7227/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 53.5236ms
+2023-07-14 10:29:15.247 +08:00 [INF] Request starting HTTP/2 GET https://localhost:7227/swagger/v1/swagger.json - -
+2023-07-14 10:29:15.358 +08:00 [INF] Request finished HTTP/2 GET https://localhost:7227/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 111.7253ms
+2023-07-14 10:29:54.689 +08:00 [INF] User profile is available. Using 'C:\Users\Hp\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-07-14 10:29:54.874 +08:00 [INF] Now listening on: https://localhost:7227
+2023-07-14 10:29:54.874 +08:00 [INF] Now listening on: http://localhost:5257
+2023-07-14 10:29:54.878 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-07-14 10:29:54.878 +08:00 [INF] Hosting environment: Development
+2023-07-14 10:29:54.879 +08:00 [INF] Content root path: C:\Users\Hp\Desktop\CODING\GUIDES\BACKEND\basic-dotnet-project\
+2023-07-14 10:29:55.459 +08:00 [INF] Request starting HTTP/2 GET https://localhost:7227/swagger/index.html - -
+2023-07-14 10:29:55.804 +08:00 [INF] Request starting HTTP/2 GET https://localhost:7227/_vs/browserLink - -
+2023-07-14 10:29:55.804 +08:00 [INF] Request starting HTTP/2 GET https://localhost:7227/_framework/aspnetcore-browser-refresh.js - -
+2023-07-14 10:29:55.815 +08:00 [INF] Request finished HTTP/2 GET https://localhost:7227/_framework/aspnetcore-browser-refresh.js - - - 200 11994 application/javascript;+charset=utf-8 9.9681ms
+2023-07-14 10:29:55.815 +08:00 [INF] Request finished HTTP/2 GET https://localhost:7227/swagger/index.html - - - 200 - text/html;charset=utf-8 359.0461ms
+2023-07-14 10:29:55.826 +08:00 [INF] Request finished HTTP/2 GET https://localhost:7227/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 21.9579ms
+2023-07-14 10:29:55.884 +08:00 [INF] Request starting HTTP/2 GET https://localhost:7227/swagger/v1/swagger.json - -
+2023-07-14 10:29:55.991 +08:00 [INF] Request finished HTTP/2 GET https://localhost:7227/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 107.5304ms
