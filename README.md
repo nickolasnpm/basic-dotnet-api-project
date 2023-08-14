@@ -10,3 +10,4 @@
 5. Entity Relationships Diagram
 6. Database (MS SQL) and Migration
 7. Implementation of Interface
+8. Serilog -Logging Library
