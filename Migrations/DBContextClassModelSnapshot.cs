@@ -44,6 +44,7 @@ namespace UdemyProject.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FileDescription")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FileExtension")
@@ -76,6 +77,7 @@ namespace UdemyProject.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("Code")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Lat")
@@ -85,6 +87,7 @@ namespace UdemyProject.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("Population")

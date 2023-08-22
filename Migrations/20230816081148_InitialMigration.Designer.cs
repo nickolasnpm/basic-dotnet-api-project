@@ -12,8 +12,8 @@ using UdemyProject.Data;
 namespace UdemyProject.Migrations
 {
     [DbContext(typeof(DBContextClass))]
-    [Migration("20230714014202_Inital Migration")]
-    partial class InitalMigration
+    [Migration("20230816081148_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,6 +47,7 @@ namespace UdemyProject.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FileDescription")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FileExtension")
@@ -79,6 +80,7 @@ namespace UdemyProject.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("Code")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Lat")
@@ -88,6 +90,7 @@ namespace UdemyProject.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("Population")
