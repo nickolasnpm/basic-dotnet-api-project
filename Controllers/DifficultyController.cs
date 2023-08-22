@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc; 
 using UdemyProject.Models.Domain;
 using UdemyProject.Models.DTO;
@@ -11,22 +12,30 @@ namespace UdemyProject.Controllers
     public class DifficultyController : Controller
     {
         private readonly IDifficultyRepository _difficultyRepository;
-        public DifficultyController(IDifficultyRepository difficultyRepository)
+        private readonly ILogger<DifficultyController> _logger;
+        public DifficultyController(IDifficultyRepository difficultyRepository, ILogger<DifficultyController> logger)
         {
             _difficultyRepository = difficultyRepository;
+            _logger = logger;
         }
 
         [HttpGet]
         [Authorize(Roles = "reader,writer")]
-        public async Task<IActionResult> GetAllDifficulty()
+        public async Task<IActionResult> GetAllDifficultyAsync()
         {
+            _logger.LogInformation("GetAllDifficultyAsync method is executed");
+
             try
             {
-                IEnumerable<DifficultyDomain> difficulty = await _difficultyRepository.GetAllAsync();
-                return Ok(difficulty);
+                IEnumerable<DifficultyDomain> difficultyDomain = await _difficultyRepository.GetAllAsync();
+
+                _logger.LogInformation($"Requested data from GetAllDifficultyAsync method: {JsonSerializer.Serialize(difficultyDomain)}");
+
+                return Ok(difficultyDomain);
             }
             catch (Exception e)
             {
+                _logger.LogDebug(e.ToString());
                 return BadRequest(e.Message);
             }
         }
@@ -36,40 +45,52 @@ namespace UdemyProject.Controllers
         [Authorize(Roles = "reader,writer")]
         public async Task<IActionResult> GetDifficultyAsync(Guid id)
         {
+            _logger.LogInformation("GetDifficultyAsync method is executed");
+
             try
             {
-                DifficultyDomain? difficulty = await _difficultyRepository.GetAsync(id);
+                DifficultyDomain? difficultyDomain = await _difficultyRepository.GetAsync(id);
 
-                if (difficulty == null)
+                if (difficultyDomain == null)
                 {
+                    _logger.LogError("Object is not in the system!");
                     return NotFound();
                 }
 
-                return Ok(difficulty);
+                _logger.LogInformation($"Requested data from GetDifficultyAsync method: {JsonSerializer.Serialize(difficultyDomain)}");
+
+                return Ok(difficultyDomain);
             }
             catch (Exception e)
             {
+                _logger.LogDebug(e.ToString());
                 return BadRequest(e.Message);
             }
         }
 
         [HttpPost]
         [Authorize(Roles = "writer")]
-        public async Task<IActionResult> AddDifficulty(DifficultyDTO difficultyDTO)
+        public async Task<IActionResult> AddDifficultyAsync (DifficultyDTO difficultyDTO)
         {
+            _logger.LogInformation("AddDifficultyAsync method is executed");
+
             try
             {
 
-                DifficultyDomain? difficulty = new DifficultyDomain
+                DifficultyDomain? difficultyDomain = new DifficultyDomain
                 {
                     Code = difficultyDTO.Code,
                 };
 
-                difficulty = await _difficultyRepository.AddAsync(difficulty);
-                return Ok(difficulty);
+                difficultyDomain = await _difficultyRepository.AddAsync(difficultyDomain);
+                
+                _logger.LogInformation($"The object is added: {JsonSerializer.Serialize(difficultyDomain)}");
+
+                return Ok(difficultyDomain);
             }
             catch (Exception e)
             {
+                _logger.LogDebug(e.ToString());
                 return BadRequest(e.Message);
             }
         }
@@ -77,26 +98,32 @@ namespace UdemyProject.Controllers
         [HttpPut]
         [Route("{id:guid}")]
         [Authorize(Roles = "writer")]
-        public async Task<IActionResult> UpdateDifficulty(Guid id, DifficultyDTO difficultyDTO)
+        public async Task<IActionResult> UpdateDifficultyAsync(Guid id, DifficultyDTO difficultyDTO)
         {
+            _logger.LogInformation("UpdateDifficultyAsync method is executed");
+
             try
             {
-                DifficultyDomain? difficulty = new DifficultyDomain
+                DifficultyDomain? difficultyDomain = new DifficultyDomain
                 {
                     Code = difficultyDTO.Code
                 };
 
-                difficulty = await _difficultyRepository.UpdateAsync(id, difficulty);
+                difficultyDomain = await _difficultyRepository.UpdateAsync(id, difficultyDomain);
 
-                if (difficulty == null)
+                if (difficultyDomain == null)
                 {
+                    _logger.LogError("Object is not in the system!");
                     return NotFound();
                 }
 
-                return Ok(difficulty);
+                _logger.LogInformation($"The object is updated: {JsonSerializer.Serialize(difficultyDomain)}");
+
+                return Ok(difficultyDomain);
             }
             catch (Exception e)
             {
+                _logger.LogDebug(e.ToString());
                 return BadRequest(e.Message);
             }
         }
@@ -104,21 +131,27 @@ namespace UdemyProject.Controllers
         [HttpDelete] 
         [Route("{id:guid}")]
         [Authorize(Roles = "writer")]
-        public async Task<IActionResult> DeleteWalkDifficulty(Guid id)
+        public async Task<IActionResult> DeleteDifficultyAsync(Guid id)
         {
+            _logger.LogInformation("DeleteDifficultyAsync method is executed");
+
             try
             {
-                DifficultyDomain? difficulty = await _difficultyRepository.DeleteAsync(id);
+                DifficultyDomain? difficultyDomain = await _difficultyRepository.DeleteAsync(id);
 
-                if (difficulty == null)
+                if (difficultyDomain == null)
                 {
+                    _logger.LogError("Object is not in the system!");
                     return NotFound();
                 }
 
-                return Ok(difficulty);
+                _logger.LogInformation("The object is deleted");
+
+                return Ok(difficultyDomain);
             }
             catch (Exception e)
             {
+                _logger.LogDebug(e.ToString());
                 return BadRequest(e.Message);
             }
         }

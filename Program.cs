@@ -1,4 +1,3 @@
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using UdemyProject.Data;
@@ -8,6 +7,9 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.FileProviders;
 using Serilog;
+using FluentValidation;
+using System.Reflection;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,7 @@ var logger = new LoggerConfiguration()
 
 builder.Logging.ClearProviders();  
 builder.Logging.AddSerilog(logger);
+
 
 //builder.Services.AddControllers(). //Original one controller
 builder.Services.AddControllers().AddNewtonsoftJson(options => 
@@ -64,12 +67,27 @@ builder.Services.AddSwaggerGen(options =>
     });
 }); // to enable the authorization method in Swagger
 
-builder.Services.AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<Program>());
+// builder.Services.AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<Program>());
+
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 builder.Services.AddDbContext<DBContextClass>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("NewZealandWalk"));  // NewZealandWalk is the name of the database
+    options
+    .UseSqlServer(builder.Configuration.GetConnectionString("NewZealandWalk"));
 });
+
+builder.Services.AddHangfire(configuration => configuration
+        .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+        .UseSimpleAssemblyNameTypeSerializer()
+        .UseRecommendedSerializerSettings()
+        .UseSqlServerStorage(builder.Configuration.GetConnectionString("HangfireConnection")));
+
+// Add the processing server as IHostedService
+builder.Services.AddHangfireServer();
+
+// Add framework services.
+builder.Services.AddMvc();
 
 builder.Services.AddScoped<IRegionRepository, RegionRepository>();
 builder.Services.AddScoped<IWalkRepository, WalkRepository>();
@@ -94,6 +112,8 @@ app.UseHttpsRedirection();
 app.UseAuthentication(); 
 
 app.UseAuthorization();
+
+app.UseHangfireDashboard();
 
 app.UseStaticFiles(new StaticFileOptions 
 {
