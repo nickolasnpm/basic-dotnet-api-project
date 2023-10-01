@@ -1,7 +1,7 @@
 # basic-asp.net-api-project
 ## This project is developed for my own learning purpose.
 
-### This project is a good exposure for me to learn the following topics:
+### I use this project to try any new libraries I found interesting before implementing it in the real world project.
 
 1. Entity Framework
 2. Fluent Data Validation
